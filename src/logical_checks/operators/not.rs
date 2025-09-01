@@ -18,3 +18,25 @@ impl<C: Check> Check for InvertedCheck<C> {
         !self.check.check()
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::logical_checks::CustomCheck;
+    use crate::Check;
+    use super::*;
+
+    #[test]
+    fn test_inverts_true_to_false() {
+        let true_check = CustomCheck::new(|| true);
+        let inverted = InvertedCheck::new(true_check);
+        assert!(!inverted.check());
+    }
+
+    #[test]
+    fn test_inverts_false_to_true() {
+        let false_check = CustomCheck::new(|| false);
+        let inverted = InvertedCheck::new(false_check);
+        assert!(inverted.check());
+    }
+}
+

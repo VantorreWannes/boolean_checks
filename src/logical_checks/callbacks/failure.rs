@@ -32,3 +32,31 @@ where
         result
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::Check;
+    use crate::logical_checks::CustomCheck;
+    use std::cell::Cell;
+
+    #[test]
+    fn test_callback_is_called_on_failure() {
+        let was_called = Cell::new(false);
+        let check = CustomCheck::new(|| false);
+        let with_callback = WithFailureCallbackCheck::new(check, || was_called.set(true));
+
+        assert!(!with_callback.check());
+        assert!(was_called.get());
+    }
+
+    #[test]
+    fn test_callback_is_not_called_on_success() {
+        let was_called = Cell::new(false);
+        let check = CustomCheck::new(|| true);
+        let with_callback = WithFailureCallbackCheck::new(check, || was_called.set(true));
+
+        assert!(with_callback.check());
+        assert!(!was_called.get());
+    }
+}
