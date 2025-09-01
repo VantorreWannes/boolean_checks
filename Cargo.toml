@@ -4,4 +4,5 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+boolean_check_derive = { version = "0.1.0", path = "boolean_check_derive" }
 thiserror = "2.0.16"
