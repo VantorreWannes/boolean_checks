@@ -1,45 +1,35 @@
 use crate::boolean_check::{
-    Check, Condition,
+    Check,
     operators::{and::AndCheck, not::InvertedCheck, or::OrCheck},
 };
 use std::ops::{BitAnd, BitOr, Not};
 
 #[derive(Debug, Clone, Copy)]
-pub struct EqualsCheck<L, R> {
+pub struct EqualsCheck<L: PartialEq<R> + Check, R: Check> {
     lhs: L,
     rhs: R,
 }
 
-impl<L, R> EqualsCheck<L, R> {
+impl<L: PartialEq<R> + Check, R: Check> EqualsCheck<L, R> {
     pub fn new(lhs: L, rhs: R) -> Self {
         Self { lhs, rhs }
     }
 }
 
-impl<L, R> Condition for EqualsCheck<L, R>
-where
-    L: PartialEq<R>,
-{
-    fn condition(&self) -> bool {
-        self.lhs == self.rhs
+impl<L: PartialEq<R> + Check, R: Check> Check for EqualsCheck<L, R> {
+    fn check(&self) -> bool {
+        self.lhs.check() == self.rhs.check()
     }
 }
 
-impl<L, R> Check for EqualsCheck<L, R>
-where
-    L: PartialEq<R> + Clone,
-    R: Clone,
-{
-}
-
-pub fn equals<L, R>(lhs: L, rhs: R) -> EqualsCheck<L, R> {
+pub fn equals<L: PartialEq<R> + Check, R: Check>(lhs: L, rhs: R) -> EqualsCheck<L, R> {
     EqualsCheck::new(lhs, rhs)
 }
 
 impl<L, R, Rhs> BitAnd<Rhs> for EqualsCheck<L, R>
 where
-    L: PartialEq<R> + Clone,
-    R: Clone,
+    L: PartialEq<R> + Check + Clone,
+    R: Clone + Check,
     Rhs: Check,
 {
     type Output = AndCheck<Self, Rhs>;
@@ -51,8 +41,8 @@ where
 
 impl<L, R, Rhs> BitOr<Rhs> for EqualsCheck<L, R>
 where
-    L: PartialEq<R> + Clone,
-    R: Clone,
+    L: PartialEq<R> + Check + Clone,
+    R: Clone + Check,
     Rhs: Check,
 {
     type Output = OrCheck<Self, Rhs>;
@@ -64,8 +54,8 @@ where
 
 impl<L, R> Not for EqualsCheck<L, R>
 where
-    L: PartialEq<R> + Clone,
-    R: Clone,
+    L: PartialEq<R> + Clone + Check,
+    R: Clone + Check,
 {
     type Output = InvertedCheck<Self>;
 

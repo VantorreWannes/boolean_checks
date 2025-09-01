@@ -1,7 +1,7 @@
 use std::ops::{BitAnd, BitOr, Not};
 
 use crate::boolean_check::{
-    Check, Condition,
+    Check, 
     operators::{and::AndCheck, or::OrCheck},
 };
 
@@ -16,13 +16,11 @@ impl<C: Check> InvertedCheck<C> {
     }
 }
 
-impl<C: Check> Condition for InvertedCheck<C> {
-    fn condition(&self) -> bool {
+impl<C: Check> Check for InvertedCheck<C> {
+    fn check(&self) -> bool {
         !self.check.check()
     }
 }
-
-impl<C: Check> Check for InvertedCheck<C> {}
 
 impl<C, Rhs> BitAnd<Rhs> for InvertedCheck<C>
 where

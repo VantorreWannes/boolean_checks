@@ -1,6 +1,6 @@
 use std::ops::{BitAnd, Not};
 
-use crate::boolean_check::{Check, Condition, operators::not::InvertedCheck};
+use crate::boolean_check::{Check, operators::not::InvertedCheck};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub struct AndCheck<L: Check, R: Check> {
@@ -18,22 +18,14 @@ where
     }
 }
 
-impl<L, R> Condition for AndCheck<L, R>
-where
-    L: Check,
-    R: Check,
-{
-    fn condition(&self) -> bool {
-        self.lhs.check() && self.rhs.check()
-    }
-}
-
 impl<L, R> Check for AndCheck<L, R>
 where
     L: Check,
     R: Check,
-    Self: Condition,
 {
+    fn check(&self) -> bool {
+        self.lhs.check() && self.rhs.check()
+    }
 }
 
 impl<L, R, Rhs> BitAnd<Rhs> for AndCheck<L, R>
