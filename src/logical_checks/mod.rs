@@ -4,6 +4,7 @@ use crate::Check;
 
 pub mod all;
 pub mod any;
+pub mod callbacks;
 pub mod operators;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, CheckOps)]
