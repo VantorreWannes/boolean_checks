@@ -3,6 +3,7 @@ use boolean_check_derive::CheckOps;
 use crate::Check;
 
 pub mod all;
+pub mod any;
 pub mod operators;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, CheckOps)]
