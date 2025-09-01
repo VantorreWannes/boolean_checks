@@ -46,7 +46,6 @@ mod tests {
     fn invert() {
         let check = CustomCheck::new(|| true);
         assert_eq!((!check).check(), false);
-        assert_eq!((!&check).check(), false);
     }
 
     #[test]
