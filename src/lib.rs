@@ -1,4 +1,5 @@
 pub mod logical_checks;
+pub mod timing_checks;
 pub use boolean_check_derive::CheckOps;
 
 use crate::logical_checks::operators::{and::AndCheck, not::InvertedCheck, or::OrCheck};
